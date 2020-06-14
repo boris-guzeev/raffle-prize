@@ -38,9 +38,10 @@ AppAsset::register($this);
     ]);
 
     $items = [
-        ['label' => 'Мои деньги: ' . $this->params['sum']],
-        ['label' => 'Мои баллы: ' . User::findOne(['id' => Yii::$app->user->identity->id])->points],
+
         ['label' => 'Home', 'url' => ['/site/index']],
+        !Yii::$app->user->isGuest ? ['label' => 'Мои деньги: ' . $this->params['sum']] : '',
+        !Yii::$app->user->isGuest ? ['label' => 'Мои баллы: ' . User::findOne(['id' => Yii::$app->user->identity->id])->points . ' (' . 'коэф.:' . $ratio . ')'] : '',
         Yii::$app->user->isGuest ? (
         ['label' => 'Login', 'url' => ['/site/login']]
         ) : (
