@@ -10,7 +10,7 @@ use Yii;
  * @property int $id
  * @property float $sum
  * @property int $winner_id
- * @property string|null $order_datetime
+ * @property string|null $operation_datetime
  *
  * @property User $winner
  */
@@ -33,7 +33,7 @@ class MoneyPrize extends \yii\db\ActiveRecord
             [['sum', 'winner_id'], 'required'],
             [['sum'], 'number'],
             [['winner_id'], 'integer'],
-            [['order_datetime'], 'safe'],
+            [['operation_datetime'], 'safe'],
             [['winner_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['winner_id' => 'id']],
         ];
     }
