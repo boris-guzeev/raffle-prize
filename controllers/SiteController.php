@@ -2,6 +2,9 @@
 
 namespace app\controllers;
 
+use app\models\Game;
+use app\models\ItemPrize;
+use app\models\Option;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -55,13 +58,35 @@ class SiteController extends Controller
     }
 
     /**
-     * Displays homepage.
+     * Отображает главную страницу приложения
      *
      * @return string
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $itemPrizes = ItemPrize::findAll(['winner_id' => null]);
+
+        $total = Option::findOne(['name' => 'total'])->value;
+        $limit = Yii::$app->params['rules']['maxPrize'];
+        $limit = $limit < $total ? $limit : $total;
+
+        // отобразить в лейауте общую сумму текущего пользователя
+        $sum = (new Query())->from('money_prizes')
+            ->where(['winner_id' => Yii::$app->user->identity->id])
+            ->sum('sum');
+        $this->view->params['sum'] = $sum ? $sum : 0;
+
+        // выйгранные предметы пользователя
+        $userItems = ItemPrize::findAll(['winner_id' => Yii::$app->user->identity->id]);
+
+        return $this->render('index', [
+            'itemPrizes' => $itemPrizes,
+            'userItems' => $userItems,
+            'total' => $total,
+            'limit' => $limit
+        ]);
+    }
+
     }
 
     /**
