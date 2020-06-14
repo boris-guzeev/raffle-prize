@@ -37,6 +37,11 @@ AppAsset::register($this);
         ],
     ]);
 
+    // будет хранить коэфициет конвертации, чтобы затем отобразить пользователю будущий результат
+    $ratio = Yii::$app->params["rules"]["ratio"];
+    echo Html::hiddenInput('ratio', $ratio);
+    echo Html::hiddenInput('action', Yii::$app->urlManager->createUrl(['site/convert']));
+
     $items = [
 
         ['label' => 'Home', 'url' => ['/site/index']],
