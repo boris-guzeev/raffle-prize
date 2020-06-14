@@ -41,8 +41,8 @@
                 data: {
                     id: $(this).attr('id')
                 },
-                success: function (data) {
-                    //window.location.reload();
+                success: function () {
+                    window.location.reload();
                 }
             });
         }
