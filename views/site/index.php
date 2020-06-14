@@ -21,12 +21,12 @@ use \yii\helpers\Html;
             </ul>
         </div>
         <div class="col-sm-8 jumbotron">
-            <h1 id="message">Розыгрыш!</h1>
+            <h2 id="message">Розыгрыш!</h2>
 
             <p class="lead">Нажмите кнопку, чтобы получить ваш приз!</p>
 
             <p>
-                <?= Html::button('Получить приз',
+                <?= Html::button('Разыграть приз',
                     [
                         'class' => 'btn btn-lg btn-success',
                         'id' => 'play',
