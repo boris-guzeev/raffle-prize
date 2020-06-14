@@ -66,7 +66,7 @@ class m200614_204035_init_test_db extends Migration
             'sum' => $this->decimal(10, 2),
             'winner_id' => $this->integer()->notNull(),
             'operation_datetime' => $this->dateTime(),
-            'operation_type' => $this->dateTime()
+            'operation_type' => $this->string()
         ]);
 
         $this->addForeignKey(
