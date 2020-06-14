@@ -7,12 +7,12 @@ use app\models\Game;
 use app\models\ItemPrize;
 use app\models\Option;
 use Yii;
+use yii\db\Query;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
-use app\models\ContactForm;
 
 class SiteController extends Controller
 {
@@ -74,6 +74,7 @@ class SiteController extends Controller
         $limit = Yii::$app->params['rules']['maxPrize'];
         $limit = $limit < $total ? $limit : $total;
 
+
         // отобразить в лейауте общую сумму текущего пользователя
         $sum = (new Query())->from('money_prizes')
             ->where(['winner_id' => Yii::$app->user->identity->id])
@@ -82,6 +83,7 @@ class SiteController extends Controller
 
         // выйгранные предметы пользователя
         $userItems = ItemPrize::findAll(['winner_id' => Yii::$app->user->identity->id]);
+
 
         return $this->render('index', [
             'itemPrizes' => $itemPrizes,
