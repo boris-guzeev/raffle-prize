@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Converter;
 use app\models\Game;
 use app\models\ItemPrize;
 use app\models\Option;
@@ -87,6 +88,17 @@ class SiteController extends Controller
         ]);
     }
 
+
+    public function actionExchange($id)
+    {
+        Converter::toMoney($id);
+    }
+
+
+    public function actionConvert()
+    {
+        Converter::toPoints();
+    }
     /**
      * Запуск игры
      * @return array информация об итоге
