@@ -87,6 +87,16 @@ class SiteController extends Controller
         ]);
     }
 
+    /**
+     * Запуск игры
+     * @return array информация об итоге
+     * @throws \yii\db\Exception
+     */
+    public function actionPlay()
+    {
+        $result = (new Game)->play();
+        Yii::$app->response->format = yii\web\Response::FORMAT_JSON;
+        return $result;
     }
 
     /**
