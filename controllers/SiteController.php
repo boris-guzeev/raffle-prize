@@ -65,6 +65,9 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        if (Yii::$app->user->isGuest)
+            $this->redirect('login');
+
         $itemPrizes = ItemPrize::findAll(['winner_id' => null]);
 
         $total = Option::findOne(['name' => 'total'])->value;
@@ -142,6 +145,6 @@ class SiteController extends Controller
     {
         Yii::$app->user->logout();
 
-        return $this->goHome();
+        return $this->redirect(['login']);
     }
 }
