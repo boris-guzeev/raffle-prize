@@ -102,7 +102,7 @@ class SiteController extends Controller
 
     public function actionConvert()
     {
-        Converter::toPoints();
+        Converter::toPoints(Yii::$app->user->identity->id);
     }
     /**
      * Запуск игры
