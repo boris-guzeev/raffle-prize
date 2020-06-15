@@ -12,7 +12,7 @@ class ConverterTest extends \Codeception\Test\Unit
     public function _fixtures()
     {
         return [
-            'profiles' => [
+            'money_prizes' => [
                 'class' => MoneyPrizeFixture::class,
             ]
         ];
@@ -29,6 +29,7 @@ class ConverterTest extends \Codeception\Test\Unit
     // tests
     public function testConvertToPoints()
     {
-        
+        $moneyPrize = $this->tester->grabFixture('money_prizes', 0);
+        expect(Converter::toPoints($moneyPrize->winner_id))->equals(true);
     }
 }
