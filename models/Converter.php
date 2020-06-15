@@ -13,8 +13,9 @@ class Converter
 
     /**
      * Меняет товар на деньги
-     * @param $id ИД товара
-     * @throws \Throwable
+     * @param integer $id ИД товара
+     * @throws \Exception
+     * @return true|null
      */
     public static function toMoney($id)
     {
@@ -38,6 +39,8 @@ class Converter
                 ]
             )->execute();
             $transaction->commit();
+
+            return true;
         } catch (\Exception $e) {
             $transaction->rollBack();
             throw $e;
@@ -46,8 +49,11 @@ class Converter
 
     /**
      * Меняет последний выйгранный текущим пользователем денежный приз на баллы
+     * @param integer $userid
+     * @return true|false
+     * @throws \Exception
      */
-    public static function toPoints()
+    public static function toPoints($userid)
     {
         $transaction = Yii::$app->db->beginTransaction();
         try {
@@ -55,7 +61,7 @@ class Converter
             $query = (new Query())
                 ->select(['id', 'sum'])
                 ->from('money_prizes')
-                ->where(['winner_id' => Yii::$app->user->identity->id, 'operation_type' => null])
+                ->where(['winner_id' => $userid, 'operation_type' => null])
                 ->orderBy(['id' => SORT_DESC])->one();
             $moneyPrice = $query['sum'];
             $moneyId = $query['id'];
@@ -65,24 +71,28 @@ class Converter
             $currentPoints = (new Query())
                 ->select('points')
                 ->from('users')
-                ->where(['id' => Yii::$app->user->identity->id])
+                ->where(['id' => $userid])
                 ->scalar();
 
             // занесем в аккаунт пользователя
             Yii::$app
                 ->db
                 ->createCommand()
-                ->update('users', ['points' => $currentPoints + $points], ['id' => Yii::$app->user->identity->id])
+                ->update('users', ['points' => $currentPoints + $points], ['id' => $userid])
                 ->execute();
 
+
+
             // зафиксируем операцию как конвертация
-            Yii::$app
+            $result = Yii::$app
                 ->db
                 ->createCommand()
                 ->update('money_prizes', ['operation_datetime' => date('Y-m-d H:i:s'), 'operation_type' => self::CONVERT_TYPE],
                     ['id' => $moneyId])
             ->execute();
             $transaction->commit();
+
+            return $result;
 
         } catch (\Exception $e) {
             $transaction->rollBack();
