@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Class m200614_125332_init_data
  */
-class m200614_125332_init_data extends Migration
+class m200614_125332_init_db extends Migration
 {
     /**
      * {@inheritdoc}
@@ -19,15 +19,6 @@ class m200614_125332_init_data extends Migration
             'points' => $this->integer(),
             'password' => $this->string(),
             'authKey' => $this->string()
-        ]);
-        $this->batchInsert('users', [
-            'login', 'firstname', 'password',
-        ], [
-            ['ivan', 'Иван', '1234'],
-            ['alex', 'Алексей', '1234'],
-            ['petr', 'Пётр', '1234'],
-            ['serg', 'Сергей', '1234'],
-            ['artem', 'Артём', '1234'],
         ]);
 
         $this->createTable('item_prizes', [
@@ -44,16 +35,6 @@ class m200614_125332_init_data extends Migration
             'users',
             'id',
             'RESTRICT');
-
-        $this->batchInsert('item_prizes', [
-            'title', 'price'
-        ], [
-            ['ботинки', 150],
-            ['куртка', 200],
-            ['шапка', 50],
-            ['толствовка', 75],
-            ['рубашка', 120]
-        ]);
 
         $this->createTable('money_prizes', [
             'id' => $this->primaryKey(),
@@ -89,7 +70,7 @@ class m200614_125332_init_data extends Migration
      */
     public function safeDown()
     {
-        echo "m200614_125332_init_data cannot be reverted.\n";
+        echo "m200614_125332_init_db cannot be reverted.\n";
 
         return false;
     }
